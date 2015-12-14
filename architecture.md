@@ -90,3 +90,116 @@ Each request corresponds to a set of operations carried by a client.
 E.g. Read correct data from storage, run analysis with correct form of data
 and store correct data into storage.
 
+### Data representation
+
+All data exchanged among components are encoded as JSON.
+Each component defines a set of standard formats of data that are acceptable/generated.
+
+
+#### Symbol extractors
+
+**Data**
+
+_Simple extraction_
+```vim
+ProjectID:
+	ImportPath: string
+	Commit: string
+Packages: [string]
+Dependencies: map[string][string]
+ExportedAPI:
+	Variables: map[string]string
+	Functions: map[string]string
+	DataTypes: map[string]string
+```
+
+_Complex extraction_
+```vim
+ProjectID:
+	ImportPath: string
+	Commit: string
+Packages: [string]
+Dependencies: map[string][string]
+ExportedAPI:
+	Variables: map[string]string
+	Functions: map[string]string
+	DataTypes: map[string]string
+UsedApi:
+	Projects: [ImportPath]
+	Variables: map[ImportPath]map[string]string
+	Functions: map[ImportPath]map[string]string
+	DataTypes: map[ImportPath]map[string]string
+```
+
+Each data types is encoded as a string, e.g
+
+```vim
+type Cluster interface {
+        ID() types.ID
+        ClientURLs() []string
+        Members() []*Member
+	...
+}
+
+```
+
+could be encoded as 
+
+```vim
+"Cluster:interface {ID() types.ID, ClientURLs() []string, Members() []*Member, ...}"
+```
+
+Precise encoding/decoding of types is language and implementation specific.
+
+**Metadata**
+
+```vim
+ProjectID:
+	ImportPath: string
+	Commit: string
+TestFiles: [string]
+```
+
+Each extractor specifies a set of json outputs it can provide.
+Client then uses a specification to correctly transform data to be sent to a storage.
+
+User should not assume given data are held together when stored (per data specification).
+Storage can separate data into smaller parts and store them into different storages.
+
+#### Analyzors
+
+All JSON specifications are analysis related.
+E.g. input for detection of cyclic dependencies:
+
+```vim
+Dependencies: map[string][string]
+Commits map[string]string
+```
+
+output:
+
+```vim
++Graph:				// definition of a data
+	Nodes: [string]
+	Edges: [string]		// edge = "string:string"
+CyclicDependencies: [Graph]	// list of graphs
+```
+
+Distinction to data and metadata is only storage related.
+Each analysis will require both data and metadata in general.
+
+#### Transformators
+
+The same as for analyzers.
+Each transformator species each input and output JSON specification.
+
+#### Symbol storages
+
+The same as for analyzers.
+Each storage species a data that can be stored into/read from.
+
+Client with a help of transformators is responsible for transforming data
+retrieved from an analysis/extractor to data compatible with a storage(s).
+At the same time a client is not aware of any JSON specification.
+Client only applies correct transformator(s).
+Responsibility for correct order and use of each component is up to a request designer.
