@@ -28,8 +28,7 @@ The model layer can consist of various models.
 Each model can request for specific data from the core layer.
 Models are not a subject of the architecture.
 
-![GitHub Logo](/fig/architecture_overview.png)
-Format: ![Alt Text](url)
+![System architecture](/fig/architecture_overview.png)
 
 ### Symbol extractors
 
@@ -61,6 +60,17 @@ The component serves to two purposes:
 
 * provide a place to store data for analysis and extraction
 * provide a database of information for users (e.g. via REST API) for additional user-specific analysis and visualization
+
+#### Data hiearchy
+
+Extractors provide basic data which can be used for analysis.
+Product of an analysis are data which are derived from the basic data.
+Derived data can be used for other analysis together with basic data.
+Analysis can produce metadata as well.
+These data covers summaries and other highlevel information about basic and derived data.
+Metadata can be a subject to metaanalysis.
+
+![Data hiearchy](/fig/metadata.png)
 
 ### Transformators
 
