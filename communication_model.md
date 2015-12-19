@@ -90,6 +90,21 @@ it sends the request to its corresponding proxy.
 Once a response from a worker kind is received, controller sends back confirmation message.
 The request from which the response originates is removed from RQQ.
 
+### Messages
+
+### Examples
+
+#### Simple Synchronious Controller
+
+The simplest implementation is a controller (Ctrl) that can process one request at time.
+All components are on the same host, no networking supported.
+All gates just invoke methods of the controller and wait for return.
+All operations are synchronious. There is no paralelism, no queue.
+All gates implement the same interface (IF).
+Request handler (HR) is common for all various controller implementations.
+
+![Simple Synchronious Controller](/fig/simple_sync_controller.png)
+
 ### TODO
 
 * specify messages
