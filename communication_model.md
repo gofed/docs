@@ -56,7 +56,7 @@ In others, each proxy, client and controller can have its own node.
 To abstract all components from their location, Point of Contact (Poc) is introduced.
 It forwards all requests/responses to other PoCs which can be on the same or remote node.
 
-#### Request handlerer
+#### Request handler
 
 Each client request correspond to one semantic operation.
 E.g. extract data from a tarball, analyse dependencies, etc.
@@ -75,6 +75,13 @@ each in a given order representing a state of processing of the client request.
 Request handler (RH) is responsible for processing each response and generating
 the correct request based on the previous request the response belonged to.
 Thus, each request and reponse carries (among other data) its client request state.
+
+#### Register
+
+To store location (local or remote) of each worker kind,
+register component is introduced.
+List of kinds can be read from a configuration file or picked up from a network.
+It is used by controller to send requests to the correct consumer.
 
 #### Controller
 
@@ -102,8 +109,22 @@ All gates just invoke methods of the controller and wait for return.
 All operations are synchronious. There is no paralelism, no queue.
 All gates implement the same interface (IF).
 Request handler (HR) is common for all various controller implementations.
+Register provides a list of object instances, one for each worker kind.
 
 ![Simple Synchronious Controller](/fig/simple_sync_controller.png)
+
+Gate implements:
+```vim
+send()
+recieve()
+```
+
+Register implements:
+```vim
+register()
+unregister()
+lookup()
+```
 
 ### TODO
 
