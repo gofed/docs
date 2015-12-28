@@ -99,6 +99,9 @@ The request from which the response originates is removed from RQQ.
 
 ### Messages
 
+Messages are transportation mechanism for exchaging [requests and responses](request_response_specification.md). Each request specifies what needs to be done and can carry [data](data_specification.md) for processing.
+
+
 ### Examples
 
 #### Simple Synchronious Controller
