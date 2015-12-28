@@ -44,11 +44,18 @@ Client response header and response header creates a context
 and are used by request handler to generate the next request (usually
 to generate a request for storing data in a storage).
 
+### Versioning
+
+Requests and responses can change over time.
+So artefacts can.
+Each set of requests, responses and artefacts is versioned as they evolve in time.
+
 ### Examples
 
 #### Allocated API analysis
 ```yaml
 client-request: "golang-allocated-api-analysis"
+version: "0.1-alpha"
 project: "github.com/coreos/etcd"
 commit: "8d368c4dbad1277a5ad216af96ccadd39b04320c"
 context: "retrieve-dependencies-from-storage"
