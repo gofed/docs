@@ -99,7 +99,12 @@ The request from which the response originates is removed from RQQ.
 
 ### Messages
 
-Messages are transportation mechanism for exchaging [requests and responses](request_response_specification.md). Each request specifies what needs to be done and can carry [data](data_specification.md) for processing.
+Messages are transportation mechanism for exchaging
+[requests and responses](request_response_specification.md).
+Each request specifies what needs to be done and can carry
+[data](data_specification.md) for processing.
+In order to provide an adaptive exchange of data among components,
+[storage requests](request_for_data.md) are introduced.
 
 
 ### Examples
@@ -131,7 +136,5 @@ lookup()
 
 ### TODO
 
-* specify messages
 * specify mechanism of pairing requests of the same kind with responses of the same kind (assign unique ID to each request? how to handle more controllers each on its own node, etc.? => different strategies and implementations of a controller)
-* this is only message related = specification of data representation for API, dependencies, project info, etc. are not subject of this document
 
