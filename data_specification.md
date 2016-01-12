@@ -44,19 +44,40 @@ And other data that will show up later.
 
 #### artefact: list of defined packages
 ```yaml
-artefact: 'golang-project-packages'
-project: 'github.com/coreos/etcd'
-commit: '729b530c489a73532843e664ae9c6db5c686d314'
-ipprefix: 'github.com/coreos/etcd'
+artefact: "golang-project-packages"
+project: "github.com/coreos/etcd"
+commit: "729b530c489a73532843e664ae9c6db5c686d314"
+ipprefix: "github.com/coreos/etcd"
 data:
-  packages: "etcdctlv3/command,etcdmain,etcdserver,etcdserver/api/v3rpc,..."
+  packages:
+   - "etcdctlv3/command"
+   - "etcdmain"
+   - "etcdserver"
+   - "etcdserver/api/v3rpc"
+   - "..."
   dependencies:
-    'etcdctlv3/command': 'github.com/bgentry/speakeasy,github.com/codegangsta/cli,...'
-    'etcdmain': 'github.com/coreos/etcd/discovery,github.com/coreos/etcd/etcdserver,...'
+    - package: "etcdctlv3/command"
+      dependencies:
+       - "github.com/bgentry/speakeasy"
+       - "github.com/codegangsta/cli"
+       - "..."
+    - package: "etcdmain"
+      dependencies:
+       - "github.com/coreos/etcd/discovery"
+       - "github.com/coreos/etcd/etcdserver"
+       - "..."
     ...
-  tests: "storage/backend,storage,..."
-  main: "main.go,etcdctl/main.go,tools/v3benchmark/report.go,..."
+  tests:
+   - "storage/backend,storage"
+   - "..."
+  main:
+   - "main.go"
+   - "etcdctl/main.go"
+   - "tools/v3benchmark/report.go"
+   - "..."
 ```
+
+[JSON Schema](schemas/golang-project-packages.json)
 
 #### artefact: project info
 ```yaml
