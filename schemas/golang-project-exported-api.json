@@ -1,0 +1,156 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Golang project packages artefact",
+    "description": "Definition of packages of a golang project",
+    "type": "object",
+    "properties": {
+        "artefact": {
+            "description": "Artefact name",
+            "type": "string"
+        },
+        "project": {
+            "description": "Project name",
+            "type": "string"
+        },
+        "commit": {
+            "description": "Project's commit",
+            "type": "string"
+        },
+        "packages": {
+            "type": "array",
+            "description": "definition of exported API for defined packages"
+            "items": {
+                "type": "object",
+                "description": "list of packages with exported symbols",
+                "properties": {
+                    "package": {
+                        "type": "string",
+                        "description": "Package name",
+                    },
+                    "datatypes": {
+                        "description": "Definition of all data types for a given package"
+                    },
+                    "functions": {
+                        "description": "Definition of all functions for a given package"
+                    },
+                    "vars": {
+                        "description": "Definition of all exported variables for a given package"
+                    },
+                    "consts": {
+                        "description": "Definition of all exported constants for a given package"
+                    },
+                },
+                "required": []
+            },
+            "uniqueItems": true,
+            "minItems": 1
+        }
+    },
+    "required": ["artefact", "project", "commit", "packages"],
+	"definitions": {
+		"identifier": {
+			"type": "object",
+			"description": "Identifier definition",
+			"properties": {
+				"type": {
+					"type": "string",
+					"description": "Type identifier",
+					"oneOf": [
+						{"enum": ["identifier"]}
+					]
+				},
+				"def": {
+					"type": "string",
+					"description": "Primitive type or ID",
+					"minLength": 1
+				},
+			},
+			"required": ["type", "def"]
+		},
+		"selector": {
+			"type": "object",
+			"description": "Identifier definition",
+			"properties": {
+				"type": {
+					"type": "string",
+					"description": "Type identifier",
+					"oneOf": [
+						{"enum": ["selector"]}
+					]
+				},
+				"prefix": {
+					"type": "object",
+					"description": "Prefix definition",
+					"oneOf": [
+						{ "$ref": "#/definitions/identifier" },
+						{ "$ref": "#/definitions/selector" },
+						{ "$ref": "#/definitions/channel" }
+					]
+				},
+				"item": {
+					"type": "string",
+					"description": "Item identifier",
+					"minLength": 1
+				}
+			},
+			"required": ["type", "prefix", "item"]
+		},
+		"channel": {
+			"type": "object",
+			"description": "Channel definition",
+			"properties": {
+				"type": {
+					"type": "string",
+					"description": "Type identifier",
+					"oneOf": [
+						{"enum": ["channel"]}
+					]
+				},
+				"dir": {
+					"type": "string",
+					"description": "Direction specification",
+					"oneOf": [
+						{"enum": ["1", "2", "3"]}
+					]
+				},
+				"value": {
+					"type": "object",
+					"description": "Value definition",
+					"oneOf": [
+						{ "$ref": "#/definitions/identifier" },
+						{ "$ref": "#/definitions/selector" },
+						{ "$ref": "#/definitions/channel" }
+					]
+				},
+			},
+			"required": ["type", "dir", "value"]
+		},
+
+
+
+
+
+        "struct": {
+            "type": "object",
+            "description": "Struct definition",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Type identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Struct name"
+                },
+                "def": {
+                    "type": "array",
+                    "items": {
+                        "type": 
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                }
+            }
+        }
+    }
+}
