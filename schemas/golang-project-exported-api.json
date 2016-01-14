@@ -18,14 +18,14 @@
         },
         "packages": {
             "type": "array",
-            "description": "definition of exported API for defined packages"
+            "description": "definition of exported API for defined packages",
             "items": {
                 "type": "object",
                 "description": "list of packages with exported symbols",
                 "properties": {
                     "package": {
                         "type": "string",
-                        "description": "Package name",
+                        "description": "Package name"
                     },
                     "datatypes": {
                         "description": "Definition of all data types for a given package"
