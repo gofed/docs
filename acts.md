@@ -83,3 +83,89 @@ data = model.call(data)
 # write the spec file into a file
 ```
 
+### Extract data from source code
+
+Special case of "Spec file generator" act. In this case all artefacts are always safed into a storage.
+
+### Apidiff
+
+Summary of steps:
+
+* get exported api for both commits (if any one is missing, export the data from downloaded tarball)
+* compute apidiff
+* store the apidiff into a storage
+* return the apidiff
+
+Required artefacts:
+
+* golang-project-exported-api
+* golang-project-api-diff
+
+This act is not distribution specific.
+It is run over upstream repositories.
+It is possible to specify local tarball instead of commit(s).
+In that case extracted data from the tarball and following apidiff are not stored.
+
+```vim
+Input: project, commit1, commit2
+
+# Retrieve data about (project, commit1) and (project, commit2)
+storage = FunctionFactory(SIMPLE_STORAGE).build()
+data0 = [{"request": "read", "artefact": "golang-project-exported-api", "project": project, "commit": commit1}, {"request": "read", "artefact": "golang-project-exported-api", "project": project, "commit": commit2}]
+data = storage.call(data)
+# check for errors
+
+# if commit1 can not be found, try to download it from upstream and extract
+# get tarball
+tarball = downloadTarball() # use TarballStorage for it
+directory = tarballExtractor(tarball) # use DirectoryStorage for it
+
+# Construct data
+data = {"project": project, "commit": commit1, "source_code_directory": directory}
+
+# Get extractor and extract data
+extractor = FunctionFactory(GOEXTRACTOR).build()
+data1 = extractor.call(data)
+# Check for errors
+...
+
+# Send data to a storage (can be voluntary)
+storage = FunctionFactory(SIMPLE_STORAGE).build()
+data = {"request": "store", "data": data1}
+data = storage.call(data)
+# Check for errors
+
+# if commit2 can not be found, try to download it from upstream and extract
+# get tarball
+tarball = downloadTarball() # use TarballStorage for it
+directory = tarballExtractor(tarball) # use DirectoryStorage for it
+
+# Construct data
+data = {"project": project, "commit": commit2, "source_code_directory": directory}
+
+# Get extractor and extract data
+extractor = FunctionFactory(GOEXTRACTOR).build()
+data2 = extractor.call(data)
+# Check for errors
+...
+
+# Send data to a storage (can be voluntary)
+storage = FunctionFactory(SIMPLE_STORAGE).build()
+data = {"request": "store", "data": data2}
+data = storage.call(data)
+# Check for errors
+
+# Combine data0, data1 and data2 into data to provide data for analysis
+analysis = FunctionFactory(APIDIFF).build()
+data = analysis.call(data)
+# Check for errors
+
+# Safe data to storage
+data = {"request": "store", "data": data}
+data = storage.call(data)
+# Check for errors
+
+# Return the data from the act
+return data
+
+```
