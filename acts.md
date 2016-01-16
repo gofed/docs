@@ -167,5 +167,65 @@ data = storage.call(data)
 
 # Return the data from the act
 return data
-
 ```
+
+### Check commit
+
+Input: project, commit
+
+
+
+```vim
+Input: project, commit
+
+# Check if the given project is already in PkgDB and if it is up-to-date or not
+storage = FunctionFactory(SIMPLE_STORAGE).build()
+data = {"request": "read", "artefact": "golang-project-info-fedora", "project": project}
+data = storage.call(data)
+# if empty data, return empty data
+
+# From the data, retrieve commit. If both commits are the same, return up-to-date.
+# If not, retrieve info about each commit from upstream repository.
+# Retrieve info about client specified commit (commit1) and fedora retrieved one (commit2)
+data = [{"request": "read", "artefact": "golang-project-repository-commit", "project": project, "commit": commit1}, {"request": "read", "artefact": "golang-project-repository-commit", "project": project, "commit": commit2}]
+data = storage.call(data)
+
+# If upstream commit is missing (not foud), try to retrieve missing data
+# Get info about repository
+data = {"request": "read", "artefact": "golang-project-repository-info", "project", project}
+data = storage.call(data)
+# Check for errors
+# Get repository 
+
+# Retrieve data for commit2
+analyzer = FunctionFactory(COMMIT_ANALYZER).build()
+data = {"repository": repository, "commit": commit2}
+data = analyzer.call(data)
+# Check for errors
+
+# Or better: send a message to a server that "missing commit for repository".
+# The act returns "upstream commit not foud"
+# Server can have triggers that periodically runs analyses for missing data
+
+# Compare both dates and return outdated, up-to-date, newer or not-yet-processed
+```
+
+### Check deps
+
+The same as for `Check commit`. It is called for each commit separately.
+
+### Tarball inspection
+
+It is used for anonymous source codes (client does not specify project and commit).
+
+Data are extracted from the source code as for spec file generator.
+Requested data are then sent back (e.g. list od dependencies, list of tests, list of provided packages, list of main packages)
+
+### Spec file review
+
+It can be decomposed into two areas:
+
+* general steps (build prms, run rpmlint, make Koji build, upload spec and srpm to a public ftp server, generate request in BZ)
+* golang specific steps (run gofed lint)
+
+Spec file review is built over core layer, not part of it.
