@@ -64,8 +64,24 @@
 				"description": "List of tests",
 				"type": "array",
 				"items": {
-					"type": "string",
-					"description": "Test"
+					"type": "object",
+					"description": "test",
+					"properties": {
+						"test": {
+							"type": "string",
+							"description": "test name",
+							"minLength": 1
+						},
+						"dependencies": {
+							"type": "array",
+							"description": "dependencies",
+							"items": {
+								"type": "string",
+								"description": "dependency"
+							},
+							"uniqueItems": true
+						}
+					}
 				},
 				"uniqueItems": true
 			},
@@ -73,8 +89,25 @@
 				"description": "List of files with 'package main' clause",
 				"type": "array",
 				"items": {
-					"type": "string",
-					"description": "Go file"
+					"type": "object",
+					"description": "Buildable main go file",
+					"object": {
+						"filename": {
+							"type": "string",
+							"description": "main filename",
+							"minLength": 1
+						},
+						"dependencies": {
+							"type": "array",
+							"description": "dependencies",
+							"items": {
+								"type": "string",
+								"description": "dependency"
+							},
+							"uniqueItems": true
+						}
+					},
+					"required": ["filename"]
 				},
 				"uniqueItems": true
 			}
