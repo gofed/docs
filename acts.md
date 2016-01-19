@@ -1,20 +1,25 @@
 ## Acts definitions
 
-### Spec file generator
+### Spec model data provider
 
 Summary of steps:
 
 * input: project and commit
 * check if the project is already packages in Fedora
 * check if the project is already analyzed (available artefacts)
-* analyze source codes form tarball in necessary (and store them)
+* analyze source codes form tarball in necessary (optionally store artefacts into client local storage)
 * check if all its deps are already packages in Fedora (check devel, main packages,tests)
-* send data to specker to render spec file (here for the moment, should be moved to model layer)
+* return all data valid for spec model
+
+Generating the final spec file is left for the model layer (e.g. Specker).
+Model can require more data than the core layer can provide.
+What is suitable for a spec model is choosen with the best effort.
 
 Required artefacts:
 
 * golang-project-info-fedora
 * golang-project-packages
+* golang-project-to-package-name
 
 User can provide arbitrary tarball.
 In that case no check for presence in PkgDb, no storing of extracted data into a storage.
@@ -51,7 +56,10 @@ data = extractor.call(data)
 # Check for errors
 ...
 
-# Send data to a storage (can be voluntary)
+# Send data to a storage (can be voluntary).
+# It can be stored to local storage of a client.
+# Spec model data provider is not a good place for extracting data
+# from source code. This act is not meant to store data into global server storage.
 storage = FunctionFactory(SIMPLE_STORAGE).build()
 data = {"request": "store", "data": data}
 data = storage.call(data)
@@ -76,8 +84,12 @@ for each deps:
 # Get data from artefacts in a form which spec file generator understands.
 data = modify(data) # still too much pseudo
 # Throw data to a model
+# This does not belong here so let us just state it for future reference
 model = ModelFactory(SPECKER).build()
 data = model.call(data)
+
+# Get a suitable package name for the project
+# The script will automatically generated a name a check if it is not already used
 
 # data contains a JSON with generated spec file
 # write the spec file into a file
@@ -85,7 +97,7 @@ data = model.call(data)
 
 ### Extract data from source code
 
-Special case of "Spec file generator" act. In this case all artefacts are always safed into a storage.
+Special case of "Spec file generator" act. In this case all artefacts are always saved into a storage.
 
 ### Apidiff
 
@@ -173,7 +185,18 @@ return data
 
 Input: project, commit
 
+Summary of steps:
 
+* check if a project of a given commit is already packaged in Fedora
+* if so get packaged commit
+* if both commits are the same, return up-to-date
+* if not, get dates of both commits and compare them
+
+Required artefacts:
+
+* golang-project-info-fedora
+* golang-project-repository-commit
+* golang-project-repository-info
 
 ```vim
 Input: project, commit
