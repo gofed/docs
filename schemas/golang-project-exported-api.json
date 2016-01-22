@@ -472,6 +472,13 @@
 			"type": "object",
 			"description": "Method definition",
 			"properties": {
+				"type": {
+					"type": "string",
+					"description": "type identifier",
+					"oneof": [
+						{"enum": ["method"]}
+					]
+				},
 				"receiver": {
 					"type": "object",
 					"description": "Receiver type definition",
@@ -537,7 +544,7 @@
 					"type": "string",
 					"description": "Type identifier"
 				},
-				"def": {
+				"fields": {
 					"type": "array",
 					"description": "Definition of fields",
 					"items": {
