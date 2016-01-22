@@ -93,6 +93,14 @@ New
 "elt": $TYPEDEF
 }
 
+new
+
+{
+"type": ellipsis",
+"def": $TYPEDEF
+}
+
+
 #### Interface
 
 {
@@ -167,9 +175,9 @@ Lets keep the "def" key in each field otherwise we duplicate the schema for each
 - map:		type, name, keytype, valuetype
 - pointer:	type, name, def
 - ellipses:	type, elt
-- interface:	type, name, def
 - method:	type, name, params[types], results[types]
 - function:	type, name, params[types], results[types], recv(type)
+- interface:	type, name, def
 - struct:	type, name, def[(name, def)]
 
 In which cases is name non-empty and empty?
@@ -187,3 +195,16 @@ Each data type will start with:
 "name": ID,
 "def": $TYPEDEF
 }
+
+{ "$ref": "#/definitions/identifier" },
+{ "$ref": "#/definitions/selector" },
+{ "$ref": "#/definitions/channel" },
+{ "$ref": "#/definitions/slice" },
+{ "$ref": "#/definitions/array" },
+{ "$ref": "#/definitions/map" },
+{ "$ref": "#/definitions/pointer" },
+{ "$ref": "#/definitions/ellipses" },
+{ "$ref": "#/definitions/function" },
+{ "$ref": "#/definitions/method" },
+{ "$ref": "#/definitions/interface" },
+{ "$ref": "#/definitions/struct" }
