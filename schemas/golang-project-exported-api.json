@@ -25,7 +25,8 @@
 				"properties": {
 					"package": {
 						"type": "string",
-						"description": "Package name"
+						"description": "Package name",
+						"minLength": 1
 					},
 					"datatypes": {
 						"description": "Definition of all data types for a given package",
@@ -54,9 +55,9 @@
 										{ "$ref": "#/definitions/interface" },
 										{ "$ref": "#/definitions/struct" }
 									]
-								},
-								"required": ["name", "def"]
-							}
+								}
+							},
+							"required": ["name", "def"]
 						}
 					},
 					"functions": {
@@ -264,7 +265,7 @@
 					]
 				}
 			},
-			"properties": ["type", "elmtype"]
+			"required": ["type", "elmtype"]
 		},
 		"array": {
 			"type": "object",
@@ -273,14 +274,14 @@
 				"type": {
 					"type": "string",
 					"description": "type identifier",
-					"oneof": [
+					"oneOf": [
 						{"enum": ["array"]}
 					]
 				},
 				"elmtype": {
 					"type": "object",
 					"description": "element type definition",
-					"oneof": [
+					"anyOf": [
 						{ "$ref": "#/definitions/identifier" },
 						{ "$ref": "#/definitions/selector" },
 						{ "$ref": "#/definitions/channel" },
@@ -295,7 +296,7 @@
 					]
 				}
 			},
-			"properties": ["type", "elmtype"]
+			"required": ["type", "elmtype"]
 		},
 		"map": {
 			"type": "object",
@@ -304,14 +305,14 @@
 				"type": {
 					"type": "string",
 					"description": "type identifier",
-					"oneof": [
+					"oneOf": [
 						{"enum": ["map"]}
 					]
 				},
 				"keytype": {
 					"type": "object",
 					"description": "Key type definition",
-					"oneof": [
+					"anyOf": [
 						{ "$ref": "#/definitions/identifier" },
 						{ "$ref": "#/definitions/selector" },
 						{ "$ref": "#/definitions/channel" },
@@ -328,7 +329,7 @@
 				"valuetype": {
 					"type": "object",
 					"description": "Key type definition",
-					"oneof": [
+					"anyOf": [
 						{ "$ref": "#/definitions/identifier" },
 						{ "$ref": "#/definitions/selector" },
 						{ "$ref": "#/definitions/channel" },
@@ -344,7 +345,7 @@
 				}
 
 			},
-			"properties": ["type", "keytype", "valuetype"]
+			"required": ["type", "keytype", "valuetype"]
 		},
 		"pointer": {
 			"type": "object",
@@ -353,14 +354,14 @@
 				"type": {
 					"type": "string",
 					"description": "type identifier",
-					"oneof": [
+					"oneOf": [
 						{"enum": ["pointer"]}
 					]
 				},
 				"def": {
 					"type": "object",
 					"description": "Pointed type definition",
-					"oneof": [
+					"anyOf": [
 						{ "$ref": "#/definitions/identifier" },
 						{ "$ref": "#/definitions/selector" },
 						{ "$ref": "#/definitions/channel" },
@@ -375,7 +376,7 @@
 					]
 				}
 			},
-			"properties": ["type", "def"]
+			"required": ["type", "def"]
 		},
 		"ellipses": {
 			"type": "object",
@@ -384,14 +385,14 @@
 				"type": {
 					"type": "string",
 					"description": "type identifier",
-					"oneof": [
+					"oneOf": [
 						{"enum": ["ellipses"]}
 					]
 				},
 				"def": {
 					"type": "object",
 					"description": "Ellipses type definition",
-					"oneof": [
+					"anyOf": [
 						{ "$ref": "#/definitions/identifier" },
 						{ "$ref": "#/definitions/selector" },
 						{ "$ref": "#/definitions/channel" },
@@ -406,7 +407,7 @@
 					]
 				}
 			},
-			"properties": ["type", "def"]
+			"required": ["type", "def"]
 		},
 		"function": {
 			"type": "object",
@@ -415,8 +416,8 @@
 				"type": {
 					"type": "string",
 					"description": "Type identifier",
-					"oneof": [
-						{"enum": ["method"]}
+					"oneOf": [
+						{"enum": ["function"]}
 					]
 				},
 				"params": {
@@ -425,7 +426,7 @@
 					"items": {
 						"type": "object",
 						"description": "Parameter type definition",
-						"oneof": [
+						"anyOf": [
 							{ "$ref": "#/definitions/identifier" },
 							{ "$ref": "#/definitions/selector" },
 							{ "$ref": "#/definitions/channel" },
@@ -448,7 +449,7 @@
 					"items": {
 						"type": "object",
 						"description": "Results type definition",
-						"oneof": [
+						"anyOf": [
 							{ "$ref": "#/definitions/identifier" },
 							{ "$ref": "#/definitions/selector" },
 							{ "$ref": "#/definitions/channel" },
@@ -466,7 +467,7 @@
 				}
 
 			},
-			"properties": ["type", "params", "results"]
+			"required": ["type", "params", "results"]
 		},
 		"method": {
 			"type": "object",
@@ -475,14 +476,14 @@
 				"type": {
 					"type": "string",
 					"description": "type identifier",
-					"oneof": [
+					"oneOf": [
 						{"enum": ["method"]}
 					]
 				},
 				"receiver": {
 					"type": "object",
 					"description": "Receiver type definition",
-					"oneof": [
+					"anyOf": [
 						{ "$ref": "#/definitions/identifier" },
 						{ "$ref": "#/definitions/selector" },
 						{ "$ref": "#/definitions/pointer" }
@@ -491,7 +492,7 @@
 				"def": {
 					"type": "object",
 					"description": "Function type definition",
-					"oneof": [
+					"oneOf": [
 						{ "$ref": "#/definitions/function" }
 					]
 				}
@@ -505,7 +506,7 @@
 				"type": {
 					"type": "string",
 					"description": "type identifier",
-					"oneof": [
+					"oneOf": [
 						{"enum": ["interface"]}
 					]
 				},
@@ -524,7 +525,7 @@
 							"def": {
 								"type": "object",
 								"description": "Function type definition",
-								"oneof": [
+								"oneOf": [
 									{ "$ref": "#/definitions/function" }
 								]	
 							}
@@ -534,7 +535,7 @@
 					"uniqueItems": true
 				}
 			},
-			"properties": ["type", "methods"]
+			"required": ["type", "methods"]
 		},
 		"struct": {
 			"type": "object",
@@ -553,13 +554,12 @@
 						"properties": {
 							"name": {
 								"type": "string",
-								"description": "Field name. Anonymous if omited.",
-								"minLength": 1
+								"description": "Field name. Anonymous if omited."
 							},
 							"def": {
 								"type": "object",
 								"description": "Type definition",
-								"oneof": [
+								"anyOf": [
 									{ "$ref": "#/definitions/identifier" },
 									{ "$ref": "#/definitions/selector" },
 									{ "$ref": "#/definitions/channel" },
@@ -579,7 +579,7 @@
 					"uniqueItems": true
 				}
 			},
-			"required": ["type", "def"]
+			"required": ["type", "fields"]
 		}
 	}
 }
