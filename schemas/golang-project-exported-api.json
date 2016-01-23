@@ -83,7 +83,7 @@
 						}
 
 					},
-					"vars": {
+					"variables": {
 						"description": "Definition of all exported variables for a given package",
 						"type": "array",
 						"items": {
@@ -114,7 +114,7 @@
 							"required": ["name"]
 						}
 					},
-					"consts": {
+					"constants": {
 						"description": "Definition of all exported constants for a given package",
 						"type": "array",
 						"items": {
