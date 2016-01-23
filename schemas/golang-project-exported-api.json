@@ -111,7 +111,7 @@
 									]
 								}
 							},
-							"required": ["name", "def"]
+							"required": ["name"]
 						}
 					},
 					"consts": {
