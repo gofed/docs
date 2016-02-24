@@ -1,4 +1,4 @@
-## Acts definitions
+## Acts definitions (how it could be)
 
 ### Spec model data provider
 

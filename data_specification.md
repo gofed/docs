@@ -40,7 +40,9 @@ And other data that will show up later.
 * Some data can be computed/constructed from other data (no need to store them)
 * Some data can be historical (e.g. list of commits previously in a distribution, etc.)
 
-### Artefacts
+### Artefacts (How it could be)
+
+The current schemas are [here](https://github.com/gofed/infra/tree/master/system/artefacts/schemas)
 
 #### artefact: list of defined packages
 ```yaml
@@ -76,8 +78,6 @@ data:
    - "tools/v3benchmark/report.go"
    - "..."
 ```
-
-[JSON Schema](schemas/golang-project-packages.json)
 
 #### artefact: project info
 ```yaml
