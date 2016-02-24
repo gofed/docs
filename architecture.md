@@ -1,6 +1,6 @@
 ## Architecture
 
-The system is aimed to analysis of projects written in Go and packaged in Fedora.
+The system is aimed to analysis of projects written in Go (e.g. packaged in Fedora).
 It is designed to support implementation of various tools (e.g. gofed, specker, etc.).
 The system can be easily extended to other distributions and languages.
 
@@ -21,9 +21,9 @@ Core layer consists of:
 * symbol extractors
 * analyzers
 * symbol storages
-* transformators
-* client
+* combinators
 
+Extractors, analyzers and storages are introduced in a form of a plugin.
 The model layer can consist of various models.
 Each model can request for specific data from the core layer.
 Models are not a subject of the architecture.
@@ -35,7 +35,7 @@ Models are not a subject of the architecture.
 Symbol extractors transforms unstrustruced data into structured data.
 Unstructured data are data that are not recognized by the system.
 The data must be transformed into structured first in order to be recognized by
-analyzers, transformators and storages.
+analyzers, combinators and storages.
 
 In general, each language has its own symbol extractors.
 One language can have move extractors depending on a type of required data.
@@ -72,23 +72,18 @@ Metadata can be a subject to metaanalysis.
 
 ![Data hiearchy](/fig/metadata.png)
 
-### Transformators
+### Combinators
 
 Some analysis may require pre-processing of input data.
 Other analysis may require post-processing of output data.
 Some models may require combination and reduction of structured data.
-Transformators component deals with all these requirements.
-In most cases this component will be used together with a client.
+Combinators component deals with all these requirements.
 
-### Client
+### Acts
 
-Purpose of a client is to connect all components and to serve requests.
-Client takes responsibility for correct communication with components.
-E.g. picking the correct extractor and storing returned data into storage.
+Purpose of an act is to connect all components together. Act takes responsibility for correct communication with components. E.g. picking the correct extractor and storing returned data into storage.
 
-Each request corresponds to a set of operations carried by a client.
-E.g. Read correct data from storage, run analysis with correct form of data
-and store correct data into storage.
+Act corresponds to a set of operations. E.g. Read correct data from storage, run analysis with correct form of data and store correct data into storage.
 
 ### Data representation
 
@@ -100,7 +95,7 @@ Each component defines a set of standard formats of data that are acceptable/gen
 
 **Data**
 
-_Simple extraction_
+_Simple extraction example_
 ```vim
 ProjectID:
 	ImportPath: string
@@ -113,7 +108,7 @@ ExportedAPI:
 	DataTypes: map[string]string
 ```
 
-_Complex extraction_
+_Complex extraction example_
 ```vim
 ProjectID:
 	ImportPath: string
@@ -161,10 +156,7 @@ TestFiles: [string]
 ```
 
 Each extractor specifies a set of json outputs it can provide.
-Client then uses a specification to correctly transform data to be sent to a storage.
-
-User should not assume given data are held together when stored (per data specification).
-Storage can separate data into smaller parts and store them into different storages.
+Act then uses a specification to correctly transform data to be sent to a storage.
 
 #### Analyzors
 
@@ -188,18 +180,18 @@ CyclicDependencies: [Graph]	// list of graphs
 Distinction to data and metadata is only storage related.
 Each analysis will require both data and metadata in general.
 
-#### Transformators
+#### Combinators
 
 The same as for analyzers.
-Each transformator species each input and output JSON specification.
+Each combinator specifies its input and output.
 
 #### Symbol storages
 
 The same as for analyzers.
-Each storage species a data that can be stored into/read from.
+Each storage specifies a data that can be stored into/read from.
 
-Client with a help of transformators is responsible for transforming data
+Act  with a help of combinators is responsible for transforming data
 retrieved from an analysis/extractor to data compatible with a storage(s).
-At the same time a client is not aware of any JSON specification.
-Client only applies correct transformator(s).
-Responsibility for correct order and use of each component is up to a request designer.
+At the same time an act is not aware of any JSON specification.
+Act only applies correct combinator(s).
+Responsibility for correct order and use of each component is up to an act designer.
